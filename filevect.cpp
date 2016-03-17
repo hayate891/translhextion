@@ -8,13 +8,13 @@ template<class T> FileVector<T>::FileVector()
 	m_nExpandBy = 1;
 }
 
-template<class T> FileVector<T>::FileVector(size_t iNewSize, size_t nExpandBy)
+template<class T> FileVector<T>::FileVector(long iNewSize, long nExpandBy)
 : m_nExpandBy(nExpandBy), m_nUpperBound(EMPTY_STATE), m_nSize(iNewSize)
 {
 	m_pT = new T[m_nSize];
 }
 
-template<class T> FileVector<T>::FileVector(T* ptArray, size_t upbound, size_t size)
+template<class T> FileVector<T>::FileVector(T* ptArray, long upbound, long size)
 : m_nExpandBy(1), m_pT(ptArray), m_nUpperBound(upbound), m_nSize(size)
 {
 #ifdef _DEBUG
@@ -31,7 +31,7 @@ template<class T> FileVector<T>::FileVector(FileVector& spaArg)
 	m_nExpandBy(spaArg.m_nExpandBy)
 {
 	m_pT = new T[m_nSize];
-	size_t k;
+	long k;
 	for(k = 0; k <= m_nUpperBound; k++)
 		m_pT[k] = spaArg.m_pT[k];
 }
@@ -41,11 +41,11 @@ template<class T> FileVector<T>::~FileVector()
 	if(m_pT != NULL) delete [] m_pT;
 }
 
-template<class T> size_t FileVector<T>::InsertExpandOn(size_t iIndex, T elem, size_t iCount)
+template<class T> long FileVector<T>::InsertExpandOn(long iIndex, T elem, long iCount)
 {
 	if(iIndex<0 || iCount<1)
 		return FALSE;
-	size_t i;
+	long i;
 	if(iIndex > m_nUpperBound)
 	{
 		for(i = 0; i < iCount; i++)
@@ -70,11 +70,11 @@ template<class T> size_t FileVector<T>::InsertExpandOn(size_t iIndex, T elem, si
 	}
 }
 
-template<class T> size_t FileVector<T>::InsertExpandOn (size_t iIndex, T* pT, size_t iSrcIndex, size_t iCount)
+template<class T> long FileVector<T>::InsertExpandOn (long iIndex, T* pT, long iSrcIndex, long iCount)
 {
 	if(iIndex<0 || iCount<1)
 		return FALSE;
-	size_t i;
+	long i;
 	if(iIndex > m_nUpperBound)
 	{
 		for(i = 0; i < iCount; i++)
@@ -102,10 +102,10 @@ template<class T> size_t FileVector<T>::InsertExpandOn (size_t iIndex, T* pT, si
 	}
 }
 
-template<class T> void FileVector<T>::InsertAtExpandRef(size_t iIndex, T& elem, size_t iCount)
+template<class T> void FileVector<T>::InsertAtExpandRef(long iIndex, T& elem, long iCount)
 {
 	if(iIndex<0 || iCount<1) return;
-	size_t i;
+	long i;
 	if(iIndex > m_nUpperBound)
 	{
 		for(i = 0; i < iCount; i++)
@@ -126,13 +126,13 @@ template<class T> void FileVector<T>::InsertAtExpandRef(size_t iIndex, T& elem, 
 	}
 }
 
-template<class T> size_t FileVector<T>::InsertAt( size_t iIndex, T elem, size_t iCount )
+template<class T> long FileVector<T>::InsertAt( long iIndex, T elem, long iCount )
 {
 	
 	if( iIndex < 0 || iIndex > m_nUpperBound )
 		return FALSE;
 
-	size_t i;
+	long i;
 	
 	if( ( m_nSize - 1 ) - m_nUpperBound >= iCount )
 	{
@@ -155,11 +155,11 @@ template<class T> size_t FileVector<T>::InsertAt( size_t iIndex, T elem, size_t 
 	return TRUE;
 }
 
-template<class T> void FileVector<T>::InsertAtRef(size_t iIndex, T& elem, size_t iCount)
+template<class T> void FileVector<T>::InsertAtRef(long iIndex, T& elem, long iCount)
 {
 	if(iIndex < 0 || iIndex > m_nUpperBound)
 		return;
-	size_t i;
+	long i;
 	if ((m_nSize - 1) - m_nUpperBound >= iCount) 
 	{
 		for(i = m_nUpperBound + iCount; i >= iIndex + iCount; i--)
@@ -180,7 +180,7 @@ template<class T> void FileVector<T>::InsertAtRef(size_t iIndex, T& elem, size_t
 	}
 }
 
-template<class T> size_t FileVector<T>::RemoveAt(size_t iIndex, size_t iCount)
+template<class T> long FileVector<T>::RemoveAt(long iIndex, long iCount)
 {
 	if(iIndex < 0 || iIndex > m_nUpperBound || iCount < 1) return FALSE;
 	if(iCount > m_nUpperBound - iIndex)
@@ -188,7 +188,7 @@ template<class T> size_t FileVector<T>::RemoveAt(size_t iIndex, size_t iCount)
 		m_nUpperBound = iIndex - 1;
 		return TRUE;
 	}
-	size_t i;
+	long i;
 	for(i = iIndex; i <= m_nUpperBound - iCount; i++)
 	{
 		m_pT[i] = m_pT[i + iCount];
@@ -197,7 +197,7 @@ template<class T> size_t FileVector<T>::RemoveAt(size_t iIndex, size_t iCount)
 	return TRUE;
 }
 
-template<class T> void FileVector<T>::SetAtExpand(size_t iIndex, T elem)
+template<class T> void FileVector<T>::SetAtExpand(long iIndex, T elem)
 {
 	if(iIndex < 0) return;
 	if(iIndex > m_nSize - 1)
@@ -206,7 +206,7 @@ template<class T> void FileVector<T>::SetAtExpand(size_t iIndex, T elem)
 	if(iIndex > m_nUpperBound) m_nUpperBound = iIndex;
 }
 
-template<class T> size_t FileVector<T>::SetAtExpandRef(size_t iIndex, T& elem)
+template<class T> long FileVector<T>::SetAtExpandRef(long iIndex, T& elem)
 {
 	if(iIndex < 0)
 		return FALSE;
@@ -221,7 +221,7 @@ template<class T> size_t FileVector<T>::SetAtExpandRef(size_t iIndex, T& elem)
 	return TRUE;
 }
 
-template<class T> void FileVector<T>::SetAt(size_t iIndex, T elem)
+template<class T> void FileVector<T>::SetAt(long iIndex, T elem)
 {
 	if(iIndex >= 0 && iIndex < m_nSize)
 	{
@@ -233,7 +233,7 @@ template<class T> void FileVector<T>::SetAt(size_t iIndex, T elem)
 		return;
 }
 
-template<class T> void FileVector<T>::SetAtRef(size_t iIndex, T& elem)
+template<class T> void FileVector<T>::SetAtRef(long iIndex, T& elem)
 {
 	if(iIndex >= 0 && iIndex < m_nSize)
 	{
@@ -245,18 +245,18 @@ template<class T> void FileVector<T>::SetAtRef(size_t iIndex, T& elem)
 		return;
 }
 
-template<class T> T FileVector<T>::GetAt(size_t iIndex)
+template<class T> T FileVector<T>::GetAt(long iIndex)
 {
 	return m_pT[iIndex];
 }
 
-template<class T> size_t FileVector<T>::AddSpace(size_t nExtend)
+template<class T> long FileVector<T>::AddSpace(long nExtend)
 {
-	size_t newsize = m_nSize + (((nExtend-1) / m_nExpandBy) + 1) * m_nExpandBy;
+	long newsize = m_nSize + (((nExtend-1) / m_nExpandBy) + 1) * m_nExpandBy;
 	T* pT = new T[newsize];
 	if (pT != NULL)
 	{
-		size_t i;
+		long i;
 		for(i = 0; i < m_nSize; i++)
 			pT[i] = m_pT[i];
 		if(m_pT != NULL)
@@ -269,27 +269,27 @@ template<class T> size_t FileVector<T>::AddSpace(size_t nExtend)
 		return FALSE;
 }
 
-template<class T> size_t FileVector<T>::GetExpandBy()
+template<class T> long FileVector<T>::GetExpandBy()
 {
 	return m_nExpandBy;
 }
 
-template<class T> size_t FileVector<T>::GetSize()
+template<class T> long FileVector<T>::GetSize()
 {
 	return m_nSize;
 }
 
-template<class T> size_t FileVector<T>::Upper()
+template<class T> long FileVector<T>::Upper()
 {
 	return m_nUpperBound;
 }
 
-template<class T> size_t FileVector<T>::Length()
+template<class T> long FileVector<T>::Length()
 {
 	return m_nUpperBound+1;
 }
 
-template<class T> size_t FileVector<T>::SetLength(size_t iNewSize, size_t nExpandBy )
+template<class T> long FileVector<T>::SetLength(long iNewSize, long nExpandBy )
 {
 	if(iNewSize < 0)
 		return FALSE;
@@ -304,7 +304,7 @@ template<class T> size_t FileVector<T>::SetLength(size_t iNewSize, size_t nExpan
 	T* pT = new T[iNewSize];
 	if (pT == NULL)
 		return FALSE;
-	size_t i;
+	long i;
 	if(m_nUpperBound < iNewSize)
 	{
 		for(i = 0; i <= m_nUpperBound; i++)
@@ -326,7 +326,7 @@ template<class T> size_t FileVector<T>::SetLength(size_t iNewSize, size_t nExpan
 	return TRUE;
 }
 
-template<class T> void FileVector<T>::SetExpandBy(size_t nExpandBy)
+template<class T> void FileVector<T>::SetExpandBy(long nExpandBy)
 {
 	if(nExpandBy > 0) m_nExpandBy = nExpandBy;
 }
@@ -340,27 +340,27 @@ template<class T> void FileVector<T>::Reset()
 	m_nUpperBound = EMPTY_STATE;
 }
 
-template<class T> size_t FileVector<T>::blContainsRef(T& elem)
+template<class T> long FileVector<T>::blContainsRef(T& elem)
 {
-	size_t i;
+	long i;
 	for(i = 0; i <= m_nUpperBound; i++)
 		if(elem == m_pT[i])
 			return TRUE;
 	return FALSE;
 }
 
-template<class T> size_t FileVector<T>::blContains(T elem)
+template<class T> long FileVector<T>::blContains(T elem)
 {
-	size_t i;
+	long i;
 	for(i = 0; i <= m_nUpperBound; i++)
 		if(elem == m_pT[i])
 			return TRUE;
 	return FALSE;
 }
 
-template<class T> size_t FileVector<T>::nContainsAt(T elem)
+template<class T> long FileVector<T>::nContainsAt(T elem)
 {
-	size_t i;
+	long i;
 	for(i = 0; i <= m_nUpperBound; i++)
 		if(elem == m_pT[i])
 			return i;
@@ -378,7 +378,7 @@ template<class T> FileVector<T>& FileVector<T>::operator=( FileVector<T>& v )
 			m_nUpperBound = v.m_nUpperBound;
 			m_nSize = m_nUpperBound + 1;
 			m_nExpandBy = v.m_nExpandBy;
-			size_t k;
+			long k;
 			for(k = 0; k <= m_nUpperBound; k++)
 				m_pT[k] = v.m_pT[k];
 		}
@@ -396,15 +396,15 @@ template<class T> void FileVector<T>::Append(T elem)
 	SetAtExpand(m_nUpperBound+1, elem);
 }
 
-template<class T> T& FileVector<T>::GetRefAt(size_t iIndex)
+template<class T> T& FileVector<T>::GetRefAt(long iIndex)
 {
 	return m_pT[iIndex];
 }
 
-template<class T> size_t FileVector<T>::Compare(FileVector<T>& v)
+template<class T> long FileVector<T>::Compare(FileVector<T>& v)
 {
 	if(m_nUpperBound != v.Upper() ) return FALSE;
-	size_t k;
+	long k;
 	for(k = 0; k <= m_nUpperBound; k++)
 	{
 		if(m_pT[k] != v[k]) return FALSE;
@@ -412,29 +412,29 @@ template<class T> size_t FileVector<T>::Compare(FileVector<T>& v)
 	return TRUE;
 }
 
-template<class T> size_t FileVector<T>::operator==(FileVector<T>& v)
+template<class T> long FileVector<T>::operator==(FileVector<T>& v)
 {
 	return Compare(v);
 }
 
-template<class T> size_t FileVector<T>::operator!=(FileVector<T>& v)
+template<class T> long FileVector<T>::operator!=(FileVector<T>& v)
 {
 	return !Compare(v);
 }
 
-template<class T> size_t FileVector<T>::IsEmpty()
+template<class T> long FileVector<T>::IsEmpty()
 {
 	return (Upper() < 0) ? TRUE : FALSE;
 }
 
-template<class T> void FileVector<T>::Exchange(size_t iIndex1, size_t iIndex2)
+template<class T> void FileVector<T>::Exchange(long iIndex1, long iIndex2)
 {
 	T temp(GetRefAt(iIndex2));
 	GetRefAt(iIndex2) = GetRefAt(iIndex1);
 	GetRefAt(iIndex1) = temp;
 }
 
-template<class T> size_t FileVector<T>::Adopt(T* ptArray, size_t upbound, size_t size)
+template<class T> long FileVector<T>::Adopt(T* ptArray, long upbound, long size)
 {
 #ifdef _DEBUG
 	if(ptArray == NULL || upbound<0 || size<=0 || upbound >= size)
@@ -448,13 +448,13 @@ template<class T> size_t FileVector<T>::Adopt(T* ptArray, size_t upbound, size_t
 	return TRUE;
 }
 
-template<class T> void FileVector<T>::SetUpperBound(size_t upbnd)
+template<class T> void FileVector<T>::SetUpperBound(long upbnd)
 {
 	if(upbnd < m_nSize)
 		m_nUpperBound = upbnd;
 }
 
-template<class T> size_t FileVector<T>::AppendArray( T* pSrc, size_t iLengthgthOfSource )
+template<class T> long FileVector<T>::AppendArray( T* pSrc, long iLengthgthOfSource )
 {
 	if( iLengthgthOfSource <= 0 )
 		return FALSE;
@@ -464,7 +464,7 @@ template<class T> size_t FileVector<T>::AppendArray( T* pSrc, size_t iLengthgthO
 		if( !AddSpace( iLengthgthOfSource ) )
 			return FALSE;
 	}
-	size_t i;
+	long i;
 	for( i=0; i<iLengthgthOfSource; i++ )
 	{
 		m_pT[ m_nUpperBound + 1 + i ] = pSrc[i];
@@ -473,17 +473,17 @@ template<class T> size_t FileVector<T>::AppendArray( T* pSrc, size_t iLengthgthO
 	return TRUE;
 }
 
-template<class T> size_t FileVector<T>::ExpandToSize()
+template<class T> long FileVector<T>::ExpandToSize()
 {
 	m_nUpperBound = m_nSize - 1;
 	return TRUE;
 }
 
-template<class T> size_t FileVector<T>::CopyFrom( size_t index, T* pSrc, size_t iLengthgthOfSource )
+template<class T> long FileVector<T>::CopyFrom( long index, T* pSrc, long iLengthgthOfSource )
 {
 	if( m_nSize - index >= iLengthgthOfSource )
 	{
-		size_t i;
+		long i;
 		for( i = 0; i < iLengthgthOfSource; i++ )
 			m_pT[ index + i ] = pSrc[ i ];
 		if( index + iLengthgthOfSource - 1 > m_nUpperBound )
@@ -494,7 +494,7 @@ template<class T> size_t FileVector<T>::CopyFrom( size_t index, T* pSrc, size_t 
 		return FALSE;
 }
 
-template<class T> size_t FileVector<T>::Replace( size_t ToReplaceIndex, size_t ToReplaceLengthgth, T* pReplaceWith, size_t ReplaceWithLengthgth )
+template<class T> long FileVector<T>::Replace( long ToReplaceIndex, long ToReplaceLengthgth, T* pReplaceWith, long ReplaceWithLengthgth )
 {
 	if( m_pT != NULL && ToReplaceLengthgth > 0 )
 	{
@@ -502,7 +502,7 @@ template<class T> size_t FileVector<T>::Replace( size_t ToReplaceIndex, size_t T
 		{
 			if( ToReplaceLengthgth < ReplaceWithLengthgth )
 			{
-				size_t i;
+				long i;
 				T dummy;
 
 				dummy = 0;
@@ -517,7 +517,7 @@ template<class T> size_t FileVector<T>::Replace( size_t ToReplaceIndex, size_t T
 			}
 			else if( ToReplaceLengthgth == ReplaceWithLengthgth )
 			{
-				size_t i;
+				long i;
 				for( i = 0; i < ReplaceWithLengthgth; i++ )
 				{
 					m_pT[ ToReplaceIndex + i ] = pReplaceWith[ i ];
@@ -526,7 +526,7 @@ template<class T> size_t FileVector<T>::Replace( size_t ToReplaceIndex, size_t T
 			}
 			else 
 			{
-				size_t i;
+				long i;
 				for( i = 0; i < ReplaceWithLengthgth; i++ )
 				{
 					m_pT[ ToReplaceIndex + i ] = pReplaceWith[ i ];

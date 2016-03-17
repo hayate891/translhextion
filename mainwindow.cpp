@@ -423,7 +423,7 @@ BOOL CALLBACK IMEBarDialogProc (HWND hDialog, UINT iMsg, WPARAM wParam, LPARAM l
 				long numbytes = 0;
 				//if(a.length() > 0)
 				std::vector<std::string> phrase;
-				size_t c = 0;
+				int c = 0;
 				for(c = 0;c<a.length();c++)
 				{
 					if(a.substr(c,1) == "\\")
@@ -463,7 +463,7 @@ BOOL CALLBACK IMEBarDialogProc (HWND hDialog, UINT iMsg, WPARAM wParam, LPARAM l
 				bSplitMultiByte = true;
 				bByteMark = oldbmark;
 				std::string output = "";
-				size_t i = 0;
+				int i = 0;
 				for(i = 0;i<phrase.size();i++)
 				{
 					if(phrase[i] == "\n")
@@ -662,7 +662,7 @@ BOOL CALLBACK ToolBarDialogProc (HWND hDialog, UINT iMsg, WPARAM wParam, LPARAM 
 				else
 				{
 					bDumpClean = false;
-					size_t k = 0;
+					int k = 0;
 					for(k = 0;k<vTableFileLeft.size();k++)
 					{
 						if(vTableFileLeft[k] == "#")
@@ -696,7 +696,7 @@ BOOL CALLBACK ToolBarDialogProc (HWND hDialog, UINT iMsg, WPARAM wParam, LPARAM 
 				else
 				{
 					bJPuncSwitch = true;
-					size_t k = 0;
+					int k = 0;
 					for(k = 0;k<vTableFileLeft.size();k++)
 					{
 						if(vTableFileLeft[k] == ">")
@@ -925,7 +925,7 @@ int Translhextion::keydown (int key)
 	case VK_END:
 	{
 		iCurrentByte = ((iCurrentByte / iBytesPerLine) + 1) * iBytesPerLine - 1;
-		if ((size_t)iCurrentByte > (FileBuffer.Upper ())+1)
+		if (iCurrentByte > (FileBuffer.Upper ())+1)
 			iCurrentByte = (FileBuffer.Upper ())+1;
 		iCurrentNibble = 1;
 
@@ -1005,7 +1005,7 @@ int Translhextion::keydown (int key)
 
 	case VK_DOWN:
 		
-		if ((size_t)(iCurrentByte+iBytesPerLine) <= FileBuffer.Length())
+		if ((iCurrentByte+iBytesPerLine) <= FileBuffer.Length())
 			iCurrentByte += iBytesPerLine;
 		
 		iScrollFlag = FALSE;
@@ -1127,7 +1127,7 @@ int Translhextion::keydown (int key)
 		{
 			if (iCurrentNibble == 0)
 				iCurrentNibble = 1;
-			else if ((size_t)iCurrentByte <= (FileBuffer.Upper ()))
+			else if (iCurrentByte <= (FileBuffer.Upper ()))
 			{
 				iCurrentNibble = 0;
 				iCurrentByte++;
@@ -1135,7 +1135,7 @@ int Translhextion::keydown (int key)
 		}
 		else
 		{
-			if ((size_t)iCurrentByte <= (FileBuffer.Upper ()))
+			if (iCurrentByte <= (FileBuffer.Upper ()))
 				iCurrentByte++;
 		}
 		
@@ -1198,10 +1198,10 @@ int Translhextion::keydown (int key)
 
 	case VK_NEXT:
 		iCurrentByte += cBufferY*iBytesPerLine;
-		if ((size_t)iCurrentByte > (FileBuffer.Upper ())+1)
+		if (iCurrentByte > (FileBuffer.Upper ())+1)
 		{
 			iCurrentByte = ((FileBuffer.Upper ())+1)/iBytesPerLine*iBytesPerLine + (iCurrentByte % iBytesPerLine);
-			if ((size_t)iCurrentByte > (FileBuffer.Upper ())+1)
+			if (iCurrentByte > (FileBuffer.Upper ())+1)
 				iCurrentByte = (FileBuffer.Upper ())+1;
 			iCurrentLine = (iCurrentByte / iBytesPerLine);
 			adjust_view_for_cursor ();
@@ -1541,7 +1541,7 @@ int Translhextion::paint()
 	HPEN sep_pen = CreatePen (PS_SOLID, 1, iSepColorValue);
 	oldpen = (HPEN) SelectObject (hdc, sep_pen);
 
-	if( Linebuffer.GetSize() < (size_t)iCharsPerLine )
+	if( Linebuffer.GetSize() < iCharsPerLine )
 	{
 		if( Linebuffer.SetLength( iCharsPerLine ) )
 		{
@@ -1710,7 +1710,7 @@ void Translhextion::update_window_status()
 				if(bTableLoaded && bTableActive)
 				{
 					bool oldbmark = bByteMark;
-					size_t wherebyte = 0;
+					int wherebyte = 0;
 					bByteMark = false;
 					std::vector<std::string> temp;
 					temp = vEmpty;
@@ -1720,9 +1720,9 @@ void Translhextion::update_window_status()
 						temp.push_back(hex_char(FileBuffer[iCurrentByte-1]));
 					temp.push_back(hex_char(FileBuffer[iCurrentByte]));
 					wherebyte = temp.size()-1;
-					if((size_t)iCurrentByte + 1 < FileBuffer.Length())
+					if(iCurrentByte + 1 < FileBuffer.Length())
 						temp.push_back(hex_char(FileBuffer[iCurrentByte+1]));
-					if((size_t)iCurrentByte + 2 < FileBuffer.Length())
+					if(iCurrentByte + 2 < FileBuffer.Length())
 						temp.push_back(hex_char(FileBuffer[iCurrentByte+2]));
 					bSplitMultiByte = false;
 					translate(temp);
@@ -2121,7 +2121,7 @@ void Translhextion::thingy_view_invert_char (HDC hdc, int iLine)
 	std::string output;
 	if (iLine < iCurrentLine || iLine > iCurrentLine + cBufferY)
 		return;
-	size_t iStartPos = iLine * iBytesPerLine, iEndPos, i = 0, m;
+	int iStartPos = iLine * iBytesPerLine, iEndPos, i = 0, m;
 	if(iStartPos > FileBuffer.Upper() + 1 )
 	{
 		return;
@@ -2142,7 +2142,7 @@ void Translhextion::thingy_view_invert_char (HDC hdc, int iLine)
 	m = iOffsetLength+iByteSpace; 
 	vPLineBuf = vEmpty;
 	std::string highlight;
-	for(i = iStartPos;(i + 2 <FileBuffer.Length() && i<= (size_t)iCurrentByte + 2);i++)
+	for(i = iStartPos;(i + 2 <FileBuffer.Length() && i<= iCurrentByte + 2);i++)
 	{
 		vPLineBuf.push_back(hex_char(FileBuffer[i]));
 	}
@@ -2216,7 +2216,7 @@ void Translhextion::thingy_view_invert_char (HDC hdc, int iLine)
 		{
 			highlight = highlight.substr(1,highlight.length()-2);
 		}
-		size_t i = 0;
+		int i = 0;
 		for(i = 0;i<vPLineBuf.size();i++)
 		{
 			if(vPLineBuf[i] == "\n")
@@ -2351,8 +2351,8 @@ void Translhextion::print_line (HDC hdc, int iLine, char* ucLineBuf, HBRUSH hbr 
 	std::vector<int> vAsciiLengths;
 	if (iLine < iCurrentLine || iLine > iCurrentLine + cBufferY)
 		return;
-	size_t iStartPos = iLine * iBytesPerLine, iEndPos, m;
-	size_t i = 0;
+	int iStartPos = iLine * iBytesPerLine, iEndPos, m;
+	int i = 0;
 	char cBuf[80], c;
 
 	if( iStartPos > FileBuffer.Upper() + 1 )
@@ -2362,7 +2362,7 @@ void Translhextion::print_line (HDC hdc, int iLine, char* ucLineBuf, HBRUSH hbr 
 
 	sprintf (cBuf, "%%%d.%dX", iOffsetLength, iOffsetLength);
 
-	for (m=0; m<(size_t)iByteSpace; m++)
+	for (m=0; m<iByteSpace; m++)
 		cBuf[5+m] = ' ';
 	cBuf[5+m] = '\0';
 	if(iOffsetMode == LOROM)
@@ -2458,7 +2458,7 @@ void Translhextion::print_line (HDC hdc, int iLine, char* ucLineBuf, HBRUSH hbr 
 			//}
 		}
 	}
-	if (iEndPos-iStartPos < (size_t)iBytesPerLine-1)
+	if (iEndPos-iStartPos < iBytesPerLine-1)
 	{
 		for (i=0; i<iBytesPerLine-1-(iEndPos-iStartPos); i++)
 		{
@@ -2468,7 +2468,7 @@ void Translhextion::print_line (HDC hdc, int iLine, char* ucLineBuf, HBRUSH hbr 
 		}
 	}
 
-	for (i=0; i<(size_t)iCharSpace; i++)
+	for (i=0; i<iCharSpace; i++)
 		ucLineBuf[m++] = ' ';
 	
 	unsigned char * temp;
@@ -2623,12 +2623,12 @@ void Translhextion::print_line (HDC hdc, int iLine, char* ucLineBuf, HBRUSH hbr 
 				}
 			}
 		}
-		if(output.length() < (size_t)iMaxCharLine)
+		if(output.length() < iMaxCharLine)
 		{
 			i = output.length();
 			if(bHideHex)
 				i = i - 15;
-			for(i = i; i < (size_t)iMaxCharLine;i++)
+			for(i = i; i < iMaxCharLine;i++)
 				output += " ";
 		}
 		else
